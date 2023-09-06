@@ -4,8 +4,7 @@ const fs = require('fs');
 
 const hostname = 'localhost';
 const port = 8080;
-const index = 'index.html';
-const about = 'about.html';
+const page404 = '404.html';
 
 const server = http.createServer((req, res) => {
   console.log(req.url);
@@ -23,6 +22,11 @@ const server = http.createServer((req, res) => {
   fs.readFile(page, (err, data) => {
     if (err) {
         console.error(err);
+        fs.readFile(page404, (err, data) => {
+          res.writeHead(404, {'Content-Type': 'text/html'});
+          res.write(data);
+          res.end();
+        });
     } else {
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.write(data);
